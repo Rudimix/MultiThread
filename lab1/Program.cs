@@ -5,14 +5,15 @@ namespace lab1
 {
     class Program
     {
-        static bool done;
+        bool done;
         static void Main(string[] args)
         {
-            string text = "Hello World!";
-            Thread T = new Thread(delegate() { Stroka(text); });
-            text = "HELLO WORLD!!!";
+            Thread.CurrentThread.Name = "MainThread";
+            Thread T = new Thread(F1);
+            T.Name = "ChildThread";
             T.Start();
-            Obj(false);
+            T.Join();
+            F1();
         }
 
         static void InfinityLoop()
@@ -32,19 +33,10 @@ namespace lab1
             }
         }
 
-        static void Flag()
+        void Obj ()
         {
-            if (!done)
-            {
-                Console.WriteLine("Done");
-                done = true;
-            }
-        }
 
-        static void Obj (Object obj)
-        {
-            bool a = (bool)obj;
-            if (a)
+            if (done)
             {
                 Console.WriteLine("HELLO");
             }
@@ -58,6 +50,13 @@ namespace lab1
         {
             Console.WriteLine(str);
         }
+
+        static void F1()
+        {
+            Thread.Sleep(1000);
+            Console.WriteLine("Hello from " + Thread.CurrentThread.Name);
+        }
+
     }
 
     class Point
